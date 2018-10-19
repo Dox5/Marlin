@@ -353,10 +353,11 @@
                                   // is more than PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
-  
-  #define  DEFAULT_Kp 12.0
-  #define  DEFAULT_Ki 2.2
-  #define  DEFAULT_Kd 80.0
+
+  // Determined via autotune
+  #define  DEFAULT_Kp 12.39
+  #define  DEFAULT_Ki 1.25
+  #define  DEFAULT_Kd 30.69
   
   // Ultimaker
   //#define  DEFAULT_Kp 22.2
@@ -387,7 +388,7 @@
 // If your configuration is significantly different than this and you don't understand the issues involved, you probably
 // shouldn't use bed PID until someone else verifies your hardware works.
 // If this is enabled, find your own PID constants below.
-//#define PIDTEMPBED
+#define PIDTEMPBED
 
 //#define BED_LIMIT_SWITCHING
 
@@ -401,11 +402,16 @@
 
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
+  // Determined via autotuning
+  #define  DEFAULT_bedKp 273.46
+  #define  DEFAULT_bedKi 52.16
+  #define  DEFAULT_bedKd 358.44
+
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define  DEFAULT_bedKp 10.00
-  #define  DEFAULT_bedKi .023
-  #define  DEFAULT_bedKd 305.4
+  //#define  DEFAULT_bedKp 10.00
+  //#define  DEFAULT_bedKi .023
+  //#define  DEFAULT_bedKd 305.4
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from pidautotune
@@ -533,7 +539,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 92.635, 92.635, 4000, 660 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 92.635, 92.635, 4016.1, 637.112 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -630,7 +636,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-//#define FIX_MOUNTED_PROBE
+#define FIX_MOUNTED_PROBE
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
@@ -762,7 +768,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#define INVERT_E0_DIR true
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -784,16 +790,18 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 145
-#define Y_BED_SIZE 145
+#define X_BED_SIZE 140
+#define Y_BED_SIZE 140
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -5
+#define Y_MIN_POS -8
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
+#define X_MAX_POS (X_BED_SIZE + X_MIN_POS)
+#define Y_MAX_POS (Y_BED_SIZE + Y_MIN_POS)
 #define Z_MAX_POS 80
+
+#define DELTA_PRINTABLE_RADIUS 70
 
 /**
  * Software Endstops
@@ -873,7 +881,7 @@
  *   leveling in steps so you can manually adjust the Z height at each grid-point.
  *   With an LCD controller the process is guided step-by-step.
  */
-//#define AUTO_BED_LEVELING_3POINT
+#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
@@ -951,12 +959,12 @@
 
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
-  #define ABL_PROBE_PT_1_X 15
-  #define ABL_PROBE_PT_1_Y 180
-  #define ABL_PROBE_PT_2_X 15
-  #define ABL_PROBE_PT_2_Y 20
-  #define ABL_PROBE_PT_3_X 170
-  #define ABL_PROBE_PT_3_Y 20
+  #define ABL_PROBE_PT_1_X 20
+  #define ABL_PROBE_PT_1_Y 100
+  #define ABL_PROBE_PT_2_X 20
+  #define ABL_PROBE_PT_2_Y 10
+  #define ABL_PROBE_PT_3_X 129
+  #define ABL_PROBE_PT_3_Y 70
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1035,7 +1043,7 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing when homing all axes (G28).
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-//#define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
@@ -1333,7 +1341,7 @@
  * you must uncomment the following option or it won't work.
  *
  */
-//#define SDSUPPORT
+#define SDSUPPORT
 
 /**
  * SD CARD: SPI SPEED
